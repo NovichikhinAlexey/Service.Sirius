@@ -17,12 +17,43 @@ namespace Sirius.WebApi
         {
             var blockchains = new[]
             {
-                new Blockchain {Id = "Bitcoin", DepositSegregationType = DepositSegregationType.ByWallets},
-                new Blockchain {Id = "Ethereum", DepositSegregationType = DepositSegregationType.ByWallets},
+                new Blockchain
+                {
+                    Id = "Bitcoin", 
+                    DepositSegregationType = DepositSegregationType.ByWallets,
+                    Requirements = new BlockchainRequirements
+                    {
+                        Wallets = new WalletRequirements
+                        {
+                            PublicKey = true
+                        }
+                    },
+                    Capabilities = new BlockchainCapabilities
+                    {
+                        DepositTags = new DepositTagsCapabilities()
+                    }
+                },
+                new Blockchain
+                {
+                    Id = "Ethereum", 
+                    DepositSegregationType = DepositSegregationType.ByWallets,
+                    Requirements = new BlockchainRequirements
+                    {
+                        Wallets = new WalletRequirements()
+                    },
+                    Capabilities = new BlockchainCapabilities
+                    {
+                        DepositTags = new DepositTagsCapabilities()
+                    }
+                },
                 new Blockchain
                 {
                     Id = "Stellar",
                     DepositSegregationType = DepositSegregationType.ByTags,
+                    Requirements = new BlockchainRequirements
+                    {
+                        Wallets = new WalletRequirements()
+                    },
                     Capabilities = new BlockchainCapabilities
                     {
                         DepositTags = new DepositTagsCapabilities

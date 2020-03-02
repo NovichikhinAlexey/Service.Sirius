@@ -5,5 +5,6 @@
         public string Id { get; set; }
         public DepositSegregationType DepositSegregationType { get; set; }
         public BlockchainCapabilities Capabilities { get; set; }
+        public BlockchainRequirements Requirements { get; set; }
     }
 }

@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Sirius.WebApi.Models;
+using Sirius.WebApi.Models.Transactions;
+using Sirius.WebApi.Models.Transactions.InnerTransfers.DepositConsolidations;
 
 namespace Sirius.WebApi
 {
@@ -7,27 +12,27 @@ namespace Sirius.WebApi
     public class DepositConsolidationsController : ControllerBase
     {
         [HttpGet("executed")]
-        public void GetDepositConsolidations()
+        public async Task<ActionResult<Paginated<ExecutedDepositConsolidationModel, string>>> GetExecutedDepositConsolidations([FromRoute, FromQuery] BlockchainNetworkEntitiesRequest request)
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpGet("executed/{id}")]
-        public void GetDepositConsolidation()
+        public async Task<ActionResult<ExecutedDepositConsolidationModel>> GetExecutedDepositConsolidation([FromRoute] BlockchainNetworkEntityRequest request)
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpGet("unsigned")]
-        public void GetUnsignedDepositConsolidations()
+        public async Task<ActionResult<Paginated<UnsignedTransactionModel, string>>> GetUnsignedDepositConsolidations([FromRoute, FromQuery] BlockchainNetworkEntitiesRequest request)
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpPost("unsigned/{id}/proceed")]
-        public void ProceedDepositConsolidation()
+        public void ProceedDepositConsolidation([FromRoute] ProceedUnsignedTransactionRequest request)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

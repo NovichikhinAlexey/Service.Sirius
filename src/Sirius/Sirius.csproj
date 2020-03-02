@@ -33,15 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="WebApi\Models\DepositConsolidations\" />
-    <Folder Include="WebApi\Models\DepositProvisions\" />
-    <Folder Include="WebApi\Models\Deposits\" />
-    <Folder Include="WebApi\Models\HotWalletProvisions\" />
-    <Folder Include="WebApi\Models\WithdrawalAggregations\" />
-    <Folder Include="WebApi\Models\Withdrawals\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Sirius.Domain\Sirius.Domain.csproj" />
   </ItemGroup>
 

@@ -11,6 +11,9 @@ namespace Sirius.WebApi.Models.Blockchains
             return new BlockchainModel
             {
                 Id = blockchain.Id, 
+                DepositSegregationType = blockchain.DepositSegregationType,
+                Capabilities = blockchain.Capabilities,
+                Requirements = blockchain.Requirements,
                 Links = new BlockchainLinks {NetworksUrl = url.NetworksUrl(blockchain.Id)}
             };
         }

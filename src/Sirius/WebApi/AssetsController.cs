@@ -58,7 +58,7 @@ namespace Sirius.WebApi
             return assets.Select(AssetMapping.FromDomain).ToArray().Paginate(request, Url, x => x.Id);
         }
 
-        [HttpGet("by-address/{address}", Name = nameof(GetAssetsByTicker))]
+        [HttpGet("by-address/{address}", Name = nameof(GetAssetByAddress))]
         public async Task<ActionResult<AssetModel>> GetAssetByAddress([FromRoute] AssetsByAddressRequest request)
         {
             throw new NotImplementedException();

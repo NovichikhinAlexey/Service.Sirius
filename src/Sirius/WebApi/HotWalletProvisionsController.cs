@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Sirius.WebApi.Models;
+using Sirius.WebApi.Models.Transactions.IncomingTransfers.HotWalletProvisions;
 
 namespace Sirius.WebApi
 {
@@ -7,15 +11,15 @@ namespace Sirius.WebApi
     public class HotWalletProvisionsController : ControllerBase
     {
         [HttpGet]
-        public void GetHotWalletProvisions()
+        public async Task<ActionResult<Paginated<HotWalletProvisionModel, string>>> GetHotWalletProvisions([FromRoute, FromQuery] HotWalletProvisionRequest request)
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpGet("{id}")]
-        public void GetHotWalletProvision()
+        public async Task<ActionResult<HotWalletProvisionModel>> GetHotWalletProvision([FromRoute] BlockchainNetworkEntityRequest request)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
