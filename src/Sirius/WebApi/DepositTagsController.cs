@@ -5,7 +5,7 @@ using Sirius.WebApi.Models.Transactions;
 
 namespace Sirius.WebApi
 {
-    // TODO: Add this to the Blockchain Wallet too
+    // TODO: Move it signing service
     [ApiController]
     [Route("api/blockchains/{blockchainId}/networks/{networkId}/deposit-tags")]
     public class DepositTagsController : ControllerBase

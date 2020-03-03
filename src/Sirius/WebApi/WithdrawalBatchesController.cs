@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sirius.WebApi.Models;
-using Sirius.WebApi.Models.Transactions;
 using Sirius.WebApi.Models.Transactions.OutgoingTransfers.WithdrawalBatches;
 
 namespace Sirius.WebApi
@@ -19,18 +18,6 @@ namespace Sirius.WebApi
 
         [HttpGet("executed/{id}")]
         public async Task<ActionResult<ExecutedWithdrawalBatchModel>> GetExecutedWithdrawalBatch([FromRoute] BlockchainNetworkEntityRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet("unsigned")]
-        public async Task<ActionResult<Paginated<UnsignedTransactionModel, string>>> GetUnsignedWithdrawalBatches([FromRoute, FromQuery] BlockchainNetworkEntitiesRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpPost("unsigned/{id}/proceed")]
-        public void ProceedWithdrawalBatch([FromRoute] ProceedUnsignedTransactionRequest request)
         {
             throw new NotImplementedException();
         }

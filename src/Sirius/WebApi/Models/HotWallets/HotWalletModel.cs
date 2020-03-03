@@ -10,7 +10,5 @@
         public string PublicKey { get; set; }
 
         public string GroupName { get; set; }
-
-        public bool IsTrusted { get; set; }
     }
 }

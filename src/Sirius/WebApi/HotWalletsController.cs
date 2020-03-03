@@ -18,21 +18,7 @@ namespace Sirius.WebApi
                 Id = Guid.NewGuid().ToString("N"),
                 Address = request.Address,
                 GroupName = request.GroupName ?? "default",
-                PublicKey = request.PublicKey,
-                IsTrusted = false
-            };
-        }
-
-        [HttpPost("generate")]
-        public async Task<ActionResult<HotWalletModel>> GenerateHotWallet([FromRoute, FromBody] GenerateHotWalletRequest request)
-        {
-            return new HotWalletModel
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                Address = "generated",
-                GroupName = request.GroupName ?? "default",
-                PublicKey = "generated",
-                IsTrusted = true
+                PublicKey = request.PublicKey
             };
         }
 
