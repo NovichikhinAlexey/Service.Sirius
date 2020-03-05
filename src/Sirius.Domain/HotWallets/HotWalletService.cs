@@ -65,7 +65,7 @@ namespace Sirius.Domain.HotWallets
                 return null;
             }
 
-            var hotWallet = new HotWallet()
+            var hotWallet = new HotWallet
             {
                 Address = address,
                 BlockchainId = blockchainId,
@@ -84,8 +84,7 @@ namespace Sirius.Domain.HotWallets
                 updateValueFactory: (key, current) =>
                 {
                     var existing = current.Values
-                        .FirstOrDefault(x =>
-                            x.Address.Equals(hotWallet.Address, StringComparison.InvariantCultureIgnoreCase));
+                        .FirstOrDefault(x => x.Address.Equals(address, StringComparison.InvariantCultureIgnoreCase));
 
                     if (existing == null)
                     {
@@ -93,7 +92,7 @@ namespace Sirius.Domain.HotWallets
                     }
                     else
                     {
-                        hotWallet = existing;
+                        current[hotWallet.Id] = hotWallet;
                     }
 
                     return current;

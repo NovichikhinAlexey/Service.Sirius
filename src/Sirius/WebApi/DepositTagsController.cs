@@ -5,17 +5,37 @@ using Sirius.WebApi.Models.Transactions;
 
 namespace Sirius.WebApi
 {
-    // TODO: Move it signing service
     [ApiController]
     [Route("api/blockchains/{blockchainId}/networks/{networkId}/deposit-tags")]
     public class DepositTagsController : ControllerBase
     {
-        [HttpPost("generate")]
-        public async Task<ActionResult<DepositTagModel>> GenerateDepositTag([FromRoute] GenerateDepositTagRequest request)
+        [HttpPut("imported")]
+        public async Task<ActionResult<DepositTagModel>> ImportDepositTag(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromRoute] ImportDepositTagRequest request)
         {
             return new DepositTagModel
             {
-                Tag = request.TagType == DestinationTagType.Text ? "generated" : "123456789"
+                Tag = request.Tag,
+                TagType = request.TagType,
+                GroupName = request.GroupName,
+                UserContext = request.UserContext
+            };
+        }
+
+        [HttpPost("generate")]
+        public async Task<ActionResult<DepositTagModel>> GenerateDepositTag(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromRoute] GenerateDepositTagRequest request)
+        {
+            return new DepositTagModel
+            {
+                Tag = request.TagType == DestinationTagType.Text ? "generated" : "123456789",
+                TagType = request.TagType,
+                GroupName = request.GroupName,
+                UserContext = request.UserContext
             };
         }
     }

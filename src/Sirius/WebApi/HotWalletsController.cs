@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sirius.Domain.HotWallets;
 using Sirius.WebApi.Models;
-using Sirius.WebApi.Models.DepositWallets;
 using Sirius.WebApi.Models.HotWallets;
 
 namespace Sirius.WebApi
@@ -34,6 +33,15 @@ namespace Sirius.WebApi
                 request.PublicKey);
 
             return Ok(HotWalletModelMapper.MapFromDomain(importWallet));
+        }
+
+        [HttpPost("generate")]
+        public async Task<ActionResult<HotWalletModel>> GenerateHotWallet(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromBody] GenerateHotWalletRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost("{id}/{groupName}/designate")]

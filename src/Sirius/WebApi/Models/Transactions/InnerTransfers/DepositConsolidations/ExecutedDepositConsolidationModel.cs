@@ -6,6 +6,7 @@ namespace Sirius.WebApi.Models.Transactions.InnerTransfers.DepositConsolidations
     {
         // TODO: Should be sequential
         public string Id { get; set; }
+        public string DepositId { get; set; }
         public string TransactionHash { get; set; }
         public string DepositWalletId { get; set; }
         public string DepositWalletAddress { get; set; }
@@ -13,7 +14,9 @@ namespace Sirius.WebApi.Models.Transactions.InnerTransfers.DepositConsolidations
         public decimal Amount { get; set; }
         public string HotWalletId { get; set; }
         public string HotWalletAddress { get; set; }
+        public string UserContext { get; set; }
         public string GroupName { get; set; }
-        public IReadOnlyCollection<PaidFee> PaidFees { get; set; }
+        public IReadOnlyCollection<PaidFee> DepositFees { get; set; }
+        public IReadOnlyCollection<PaidFee> TransactionFees { get; set; }
     }
 }

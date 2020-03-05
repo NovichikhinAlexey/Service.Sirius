@@ -11,6 +11,6 @@ namespace Sirius.WebApi.Models.Transactions.OutgoingTransfers.WithdrawalBatches
         public string HotWalletAddress { get; set; }
         public string GroupName { get; set; }
         public IReadOnlyCollection<BatchedWithdrawal> Withdrawals { get; set; }
-        public IReadOnlyCollection<PaidFee> PaidFees { get; set; }
+        public IReadOnlyCollection<PaidFee> TransactionFees { get; set; }
     }
 }

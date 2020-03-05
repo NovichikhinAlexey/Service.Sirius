@@ -30,9 +30,19 @@ namespace Sirius.WebApi
                 networkId,
                 request.Address,
                 request.GroupName,
+                request.UserContext,
                 request.PublicKey);
 
             return Ok(DepositWalletModelMapper.MapFromDomain(wallet));
+        }
+
+        [HttpPost("generate")]
+        public async Task<ActionResult<DepositWalletModel>> GenerateDepositWallet(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromBody] GenerateDepositWalletRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpGet]

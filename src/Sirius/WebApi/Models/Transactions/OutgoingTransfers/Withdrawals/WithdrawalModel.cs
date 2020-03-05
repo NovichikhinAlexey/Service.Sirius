@@ -12,7 +12,8 @@ namespace Sirius.WebApi.Models.Transactions.OutgoingTransfers.Withdrawals
         public string TransactionHash { get; set; }
         public long ConfirmationsCount { get; set; }
         public bool IsConfirmed { get; set; }
-        public IReadOnlyCollection<PaidFee> PaidFees { get; set; }
+        public IReadOnlyCollection<PaidFee> TransactionFees { get; set; }
+        public IReadOnlyCollection<PaidFee> WithdrawalFees { get; set; }
         public string HotWalletId { get; set; }
         public string HotWalletAddress { get; set; }
         public string GroupName { get; set; }

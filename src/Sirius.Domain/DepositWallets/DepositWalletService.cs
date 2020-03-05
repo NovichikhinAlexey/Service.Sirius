@@ -23,9 +23,10 @@ namespace Sirius.Domain.DepositWallets
             string networkId, 
             string address, 
             string groupName, 
-            string pubKey = null)
+            string userContext,
+            string pubKey)
         {
-            var importedWallet = await _blockchainWalletClient.ImportWalletAsync(blockchainId, networkId, new ImportWalletRequest()
+            var importedWallet = await _blockchainWalletClient.ImportWalletAsync(blockchainId, networkId, new ImportWalletRequest
             {
                 Address = address,
                 TransferCallbackOptions = new TransferCallbackOptions()
@@ -36,11 +37,12 @@ namespace Sirius.Domain.DepositWallets
                 return null;
             }
 
-            var depositWallet = new DepositWallet()
+            var depositWallet = new DepositWallet
             {
                 Address = address,
                 BlockchainId = blockchainId,
                 GroupName = groupName,
+                UserContext = userContext,
                 Id = importedWallet.Id.ToString(),
                 NetworkId = networkId,
                 PublicKey = pubKey
@@ -54,9 +56,7 @@ namespace Sirius.Domain.DepositWallets
                 },
                 updateValueFactory: (key, current) =>
                 {
-                    var existing = current.Values
-                        .FirstOrDefault(x =>
-                            x.Address.Equals(depositWallet.Address, StringComparison.InvariantCultureIgnoreCase));
+                    var existing = current.Values.FirstOrDefault(x => x.Address.Equals(address, StringComparison.InvariantCultureIgnoreCase));
 
                     if (existing == null)
                     {
@@ -64,7 +64,7 @@ namespace Sirius.Domain.DepositWallets
                     }
                     else
                     {
-                        depositWallet = existing;
+                        current[depositWallet.Id] = depositWallet;
                     }
 
                     return current;

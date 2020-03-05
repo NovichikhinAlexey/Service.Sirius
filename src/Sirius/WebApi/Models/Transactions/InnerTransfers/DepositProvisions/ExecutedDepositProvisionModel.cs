@@ -14,6 +14,6 @@ namespace Sirius.WebApi.Models.Transactions.InnerTransfers.DepositProvisions
         public string HotWalletId { get; set; }
         public string HotWalletAddress { get; set; }
         public string GroupName { get; set; }
-        public IReadOnlyCollection<PaidFee> PaidFees { get; set; }
+        public IReadOnlyCollection<PaidFee> TransactionFees { get; set; }
     }
 }
