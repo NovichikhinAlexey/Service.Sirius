@@ -33,9 +33,12 @@ namespace Sirius.WebApi
         }
 
         [HttpGet("{id}", Name = nameof(GetAsset))]
-        public async Task<ActionResult<AssetModel>> GetAsset([FromRoute] BlockchainNetworkEntityRequest request)
+        public async Task<ActionResult<AssetModel>> GetAsset(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId, 
+            [FromRoute] string id)
         {
-            var asset = _assetService.GetAssetForId(request.BlockchainId, request.NetworkId, request.Id);
+            var asset = _assetService.GetAssetForId(blockchainId, networkId, id);
             
             if (asset == default)
             {
@@ -46,9 +49,12 @@ namespace Sirius.WebApi
         }
 
         [HttpGet("by-ticker/{ticker}", Name = nameof(GetAssetsByTicker))]
-        public async Task<ActionResult<Paginated<AssetModel, string>>> GetAssetsByTicker([FromRoute] AssetsByTickerRequest request)
+        public async Task<ActionResult<Paginated<AssetModel, string>>> GetAssetsByTicker(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromRoute] AssetsByTickerRequest request)
         {
-            var assets = _assetService.GetAssetsForTicker(request.BlockchainId, request.NetworkId, request.Ticker);
+            var assets = _assetService.GetAssetsForTicker(blockchainId, networkId, request.Ticker);
 
             if (!assets.Any())
             {

@@ -1,10 +1,13 @@
-﻿using Sirius.Configuration;
+﻿using System.Net.Http;
+using Sirius.Configuration;
 using Sirius.GrpcServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Service.BlockchainWallets.Http.Client;
 using Sirius.Domain.Assets;
+using Sirius.Domain.Deposits;
 using Sirius.Domain.Networks;
 using Swisschain.Sdk.Server.Common;
 
@@ -22,6 +25,17 @@ namespace Sirius
 
             services.AddSingleton<NetworkService>();
             services.AddSingleton<AssetService>();
+            services.AddSingleton<DepositWalletService>();
+            services.AddHttpClient();
+
+            services.AddTransient<IBlockchainWalletClient>(x =>
+            {
+                var clientFactory = x.GetRequiredService<IHttpClientFactory>();
+                var client = clientFactory.CreateClient();
+                var baseUrl = this.Config.BlockchainWalletApiService.Url;
+
+                return new BlockchainWalletClient(baseUrl, client);
+            });
         }
 
         protected override void RegisterEndpoints(IEndpointRouteBuilder endpoints)

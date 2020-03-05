@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.27.0" />
     <PackageReference Include="Swisschain.Sdk.Server" Version="2.1.0" />
+    <PackageReference Include="Swisschain.Service.BlockchainWalletApi.Client" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>

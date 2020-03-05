@@ -2,11 +2,11 @@
 {
     public class AppConfig
     {
-        public ApiService ApiService { get; set; }
+        public BlockchainWalletApiService BlockchainWalletApiService { get; set; }
     }
 
-    public class ApiService
+    public class BlockchainWalletApiService
     {
-        public string GasAmountReservePercentage { get; set; }
+        public string Url { get; set; }
     }
 }

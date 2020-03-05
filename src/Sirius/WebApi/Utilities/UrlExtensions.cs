@@ -18,8 +18,12 @@ namespace Sirius.WebApi.Utilities
         public static string DepositWalletsUrl(this IUrlHelper url, string blockchainId, string networkId, string groupName)
         {
             return url.Action(nameof(DepositWalletsController.GetDepositWallets),
-                ControllerHelper.GetShortName<DepositWalletsController>(),
-                new DepositWalletsRequest { BlockchainId = blockchainId, NetworkId = networkId, GroupName = groupName });
+                ControllerHelper.GetShortName<DepositWalletsController>(), new
+                {
+                    BlockchainId = blockchainId,
+                    NetworkId = networkId,
+                    DepositWalletRequest = new DepositWalletsRequest { GroupName = groupName }
+                });
         }
 
         public static string HotWalletsUrl(this IUrlHelper url, string blockchainId, string networkId, string groupName)
