@@ -7,7 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Service.BlockchainWallets.Http.Client;
 using Sirius.Domain.Assets;
-using Sirius.Domain.Deposits;
+using Sirius.Domain.DepositWallets;
+using Sirius.Domain.HotWallets;
 using Sirius.Domain.Networks;
 using Swisschain.Sdk.Server.Common;
 
@@ -26,6 +27,7 @@ namespace Sirius
             services.AddSingleton<NetworkService>();
             services.AddSingleton<AssetService>();
             services.AddSingleton<DepositWalletService>();
+            services.AddSingleton<HotWalletService>();
             services.AddHttpClient();
 
             services.AddTransient<IBlockchainWalletClient>(x =>

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Sirius.Domain.HotWallets;
 using Sirius.WebApi.Models;
+using Sirius.WebApi.Models.DepositWallets;
 using Sirius.WebApi.Models.HotWallets;
 
 namespace Sirius.WebApi
@@ -10,40 +13,96 @@ namespace Sirius.WebApi
     [Route("api/blockchains/{blockchainId}/networks/{networkId}/hot-wallets")]
     public class HotWalletsController : ControllerBase
     {
+        private readonly HotWalletService _hotWalletService;
+
+        public HotWalletsController(HotWalletService hotWalletService)
+        {
+            _hotWalletService = hotWalletService;
+        }
+
         [HttpPut("imported")]
-        public async Task<ActionResult<HotWalletModel>> ImportHotWallet([FromRoute, FromBody] ImportHotWalletRequest request)
+        public async Task<ActionResult<HotWalletModel>> ImportHotWallet(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromBody] ImportHotWalletRequest request)
         {
-            return new HotWalletModel
-            {
-                Id = Guid.NewGuid().ToString("N"),
-                Address = request.Address,
-                GroupName = request.GroupName ?? "default",
-                PublicKey = request.PublicKey
-            };
+            var importWallet = await _hotWalletService.ImportAsync(
+                blockchainId, 
+                networkId, 
+                request.Address,
+                request.GroupName,
+                request.PublicKey);
+
+            return Ok(HotWalletModelMapper.MapFromDomain(importWallet));
         }
 
-        [HttpPost("{id}/designate")]
-        public async Task<ActionResult> DesignateHotWallet([FromRoute, FromBody] BlockchainNetworkEntityRequest request)
+        [HttpPost("{id}/{groupName}/designate")]
+        public async Task<ActionResult> DesignateHotWallet(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromRoute] string groupName,
+            [FromRoute] string id)
         {
-            throw new NotImplementedException();
+            var hotwallet = await _hotWalletService.DesignateWalletAsync(blockchainId, networkId, groupName, id);
+
+            if (hotwallet == null)
+                return NotFound();
+
+            return Ok();
         }
 
-        [HttpGet("designated")]
-        public async Task<ActionResult<HotWalletModel>> GetActiveHotWallet([FromRoute, FromQuery] DesignatedHotWalletRequest request)
+        [HttpGet("{groupName}/designated")]
+        public async Task<ActionResult<HotWalletModel>> GetActiveHotWallet(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromRoute] string groupName)
         {
-            throw new NotImplementedException();
+            var hotwallet = await _hotWalletService.GetDesignatedWalletAsync(blockchainId, networkId, groupName);
+
+            if (hotwallet == null)
+                return NotFound();
+
+            return Ok(HotWalletModelMapper.MapFromDomain(hotwallet));
         }
 
         [HttpGet]
-        public async Task<ActionResult<Paginated<HotWalletModel, string>>> GetHotWallets([FromRoute, FromQuery] HotWalletsRequest request)
+        public async Task<ActionResult<Paginated<HotWalletModel, string>>> GetHotWallets(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromQuery] HotWalletsRequest request)
         {
-            throw new NotImplementedException();
+            int.TryParse(request.StartingAfter, out var startingAfter);
+            int.TryParse(request.EndingBefore, out var endingBefore);
+
+            var wallets = await _hotWalletService.GetAllAsync(
+                blockchainId,
+                networkId,
+                startingAfter,
+                endingBefore,
+                request.Limit);
+
+            if (wallets == null || !wallets.Any())
+                return NotFound();
+
+            return Ok(wallets
+                .Select(HotWalletModelMapper.MapFromDomain)
+                .ToArray()
+                .Paginate(request, Url, model => model.Id));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<HotWalletModel>> GetHotWallet([FromRoute] BlockchainNetworkEntityRequest request)
+        public async Task<ActionResult<HotWalletModel>> GetHotWallet(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId, 
+            [FromRoute] string id)
         {
-            throw new NotImplementedException();
+            var wallet = await _hotWalletService.GetByIdAsync(blockchainId, networkId, id);
+
+            if (wallet == null)
+                return NotFound();
+
+
+            return Ok(HotWalletModelMapper.MapFromDomain(wallet));
         }
     }
 }

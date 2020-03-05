@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Sirius.Domain.Deposits;
+using Sirius.Domain.DepositWallets;
 using Sirius.WebApi.Models;
 using Sirius.WebApi.Models.DepositWallets;
 

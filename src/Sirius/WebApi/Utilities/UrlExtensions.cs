@@ -12,7 +12,7 @@ namespace Sirius.WebApi.Utilities
         {
             return url.Action(nameof(AssetsController.GetAssets),
                 ControllerHelper.GetShortName<AssetsController>(),
-                new BlockchainNetworkEntitiesRequest { BlockchainId = blockchainId, NetworkId = networkId });
+                new { BlockchainId = blockchainId, NetworkId = networkId });
         }
 
         public static string DepositWalletsUrl(this IUrlHelper url, string blockchainId, string networkId, string groupName)
@@ -30,7 +30,7 @@ namespace Sirius.WebApi.Utilities
         {
             return url.Action(nameof(HotWalletsController.GetHotWallets),
                 ControllerHelper.GetShortName<HotWalletsController>(),
-                new HotWalletsRequest { BlockchainId = blockchainId, NetworkId = networkId, GroupName = groupName });
+                new { BlockchainId = blockchainId, NetworkId = networkId, GroupName = groupName });
         }
 
         public static string NetworksUrl(this IUrlHelper url, string blockchainId)

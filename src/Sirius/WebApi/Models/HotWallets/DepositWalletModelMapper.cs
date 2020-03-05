@@ -1,16 +1,15 @@
-﻿using Sirius.Domain.DepositWallets;
-using Sirius.Domain.HotWallets;
+﻿using Sirius.Domain.HotWallets;
 
-namespace Sirius.WebApi.Models.DepositWallets
+namespace Sirius.WebApi.Models.HotWallets
 {
-    public static class DepositWalletModelMapper
+    public static class HotWalletModelMapper
     {
-        public static DepositWalletModel MapFromDomain(DepositWallet depositWallet)
+        public static HotWalletModel MapFromDomain(HotWallet depositWallet)
         {
             if (depositWallet == null)
                 return null;
 
-            return new DepositWalletModel()
+            return new HotWalletModel()
             {
                 Id = depositWallet.Id,
                 PublicKey = depositWallet.PublicKey,

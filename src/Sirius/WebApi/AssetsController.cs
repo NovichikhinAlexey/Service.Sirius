@@ -20,9 +20,12 @@ namespace Sirius.WebApi
         }
 
         [HttpGet(Name = nameof(GetAssets))]
-        public async Task<ActionResult<Paginated<AssetModel, string>>> GetAssets([FromRoute, FromQuery] BlockchainNetworkEntitiesRequest request)
+        public async Task<ActionResult<Paginated<AssetModel, string>>> GetAssets(
+            [FromRoute] string blockchainId,
+            [FromRoute] string networkId,
+            [FromQuery] BlockchainNetworkEntitiesRequest request)
         {
-            var blockchainAssets =_assetService.GetAssetsFor(request.BlockchainId, request.NetworkId);
+            var blockchainAssets =_assetService.GetAssetsFor(blockchainId, networkId);
             
             if (!blockchainAssets.Any())
             {

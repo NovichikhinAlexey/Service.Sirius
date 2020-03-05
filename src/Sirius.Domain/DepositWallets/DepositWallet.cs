@@ -1,4 +1,4 @@
-﻿namespace Sirius.Domain.Deposits
+﻿namespace Sirius.Domain.DepositWallets
 {
     public class DepositWallet
     {
