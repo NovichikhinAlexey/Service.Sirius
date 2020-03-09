@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Service.BlockchainWallets.Http.Client;
+using Service.BlockchainWalletApi.Client.Http;
 
 namespace Sirius.Domain.HotWallets
 {
@@ -57,6 +57,7 @@ namespace Sirius.Domain.HotWallets
             var importedWallet = await _blockchainWalletClient.ImportWalletAsync(blockchainId, networkId, new ImportWalletRequest()
             {
                 Address = address,
+                PubKey = pubKey,
                 TransferCallbackOptions = new TransferCallbackOptions()
             });
 

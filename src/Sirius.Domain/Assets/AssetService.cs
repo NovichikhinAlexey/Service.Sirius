@@ -47,18 +47,6 @@ namespace Sirius.Domain.Assets
                         Id = "ETH",
                         Ticker = "ETH",
                         Accuracy = 18
-                    },
-                    new Asset
-                    {
-                        Id = "0xdac17f958d2ee523a2206206994597c13d831ec7",
-                        Ticker = "USDT",
-                        Address = "0xdac17f958d2ee523a2206206994597c13d831ec7"
-                    },
-                    new Asset
-                    {
-                        Id = "0x5ac17f958d2ee523a2206206994597c13d831ec8",
-                        Ticker = "USDT",
-                        Address = "0x5ac17f958d2ee523a2206206994597c13d831ec8"
                     }
                 },
                 [("Ethereum", "MainNet")] = new[]
@@ -68,12 +56,6 @@ namespace Sirius.Domain.Assets
                         Id = "ETH",
                         Ticker = "ETH",
                         Accuracy = 18
-                    },
-                    new Asset
-                    {
-                        Id = "0xdac17f958d2ee523a2206206994597c13d831ec7",
-                        Ticker = "USDT",
-                        Address = "0xdac17f958d2ee523a2206206994597c13d831ec7"
                     }
                 }
             };

@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Service.BlockchainWallets.Http.Client;
+using Service.BlockchainWalletApi.Client.Http;
 using Sirius.Domain.Assets;
 using Sirius.Domain.DepositWallets;
 using Sirius.Domain.HotWallets;
 using Sirius.Domain.Networks;
+using Sirius.Domain.Withdrawals;
 using Swisschain.Sdk.Server.Common;
 
 namespace Sirius
@@ -28,6 +29,7 @@ namespace Sirius
             services.AddSingleton<AssetService>();
             services.AddSingleton<DepositWalletService>();
             services.AddSingleton<HotWalletService>();
+            services.AddSingleton<WithdrawalService>();
             services.AddHttpClient();
 
             services.AddTransient<IBlockchainWalletClient>(x =>

@@ -2,7 +2,7 @@
 
 namespace Sirius.WebApi.Models.Transactions.OutgoingTransfers.Withdrawals
 {
-    public sealed class WithdrawalsRequest : BlockchainNetworkEntitiesRequest
+    public sealed class WithdrawalsRequest : PaginationRequest<string>
     {
         [FromQuery]
         public WithdrawalState? State { get; set; }

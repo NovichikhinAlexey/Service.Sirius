@@ -7,15 +7,6 @@ namespace Sirius.WebApi.Models.Transactions.OutgoingTransfers.Withdrawals
 {
     public sealed class ExecuteWithdrawalRequest
     {
-        [FromHeader(Name = "X-Request-ID"), Required]
-        public Guid RequestId { get; set; }
-
-        [FromRoute(Name = "blockchainId")]
-        public string BlockchainId { get; set; }
-
-        [FromRoute(Name = "networkId")]
-        public string NetworkId { get; set; }
-
         [FromBody]
         public string HotWalletId { get; set; }
 
