@@ -13,6 +13,9 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="MassTransit" Version="6.2.1" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="6.2.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="6.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0" />
   </ItemGroup>
@@ -35,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sirius.Domain\Sirius.Domain.csproj" />
+    <ProjectReference Include="..\Sirius.Messages\Sirius.Messages.csproj" />
   </ItemGroup>
 
 </Project>

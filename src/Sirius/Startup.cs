@@ -1,15 +1,20 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using MassTransit;
 using Sirius.Configuration;
 using Sirius.GrpcServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Service.BlockchainWalletApi.Client.Http;
 using Sirius.Domain.Assets;
 using Sirius.Domain.DepositWallets;
 using Sirius.Domain.HotWallets;
 using Sirius.Domain.Networks;
+using Sirius.HostedServices;
 using Sirius.Domain.Withdrawals;
 using Swisschain.Sdk.Server.Common;
 
@@ -39,6 +44,24 @@ namespace Sirius
                 var baseUrl = this.Config.BlockchainWalletApiService.Url;
 
                 return new BlockchainWalletClient(baseUrl, client);
+            });
+
+            services.AddMassTransit(x =>
+            {
+                EndpointConvention.Map<ExecuteWithdrawal>(new Uri("queue:sirius-withdrawals"));
+
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+                {
+                    cfg.Host("rabbit-liquidity.liquidity.svc.cluster.local", host =>
+                    {
+                        host.Username("liquidity");
+                        host.Password("liquidity");
+                    });
+
+                    cfg.SetLoggerFactory(provider.GetRequiredService<ILoggerFactory>());
+                }));
+
+                services.AddSingleton<IHostedService, BusService>();
             });
         }
 

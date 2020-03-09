@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Sirius.Domain.HotWallets;
 using Sirius.Domain.Withdrawals;
@@ -13,15 +14,15 @@ namespace Sirius.WebApi
     [Route("api/blockchains/{blockchainId}/networks/{networkId}/withdrawals")]
     public class WithdrawalsController : ControllerBase
     {
-        private readonly WithdrawalService _withdrawalService;
         private readonly HotWalletService _hotWalletService;
+        private readonly ISendEndpointProvider _commandsSender;
 
         public WithdrawalsController(
-            WithdrawalService withdrawalService,
-            HotWalletService hotWalletService)
+            HotWalletService hotWalletService,
+            ISendEndpointProvider commandsSender)
         {
-            _withdrawalService = withdrawalService;
             _hotWalletService = hotWalletService;
+            _commandsSender = commandsSender;
         }
 
         [HttpPost("execute")]
@@ -36,16 +37,18 @@ namespace Sirius.WebApi
             if (hotWallet == null)
                 return NotFound();
 
-            await _withdrawalService.ExecuteTransferAsync(
-                requestId, 
-                blockchainId, 
-                networkId, 
-                hotWallet.Address, 
-                request.DestinationAddress,
-                request.AssetId,
-                request.Amount);
+            await _commandsSender.Send(new ExecuteWithdrawal
+            {
+                RequestId = requestId,
+                BlockchainId = blockchainId,
+                NetworkId = networkId,
+                HotWalletAddress = hotWallet.Address,
+                DestinationAddress = request.DestinationAddress,
+                AssetId = request.AssetId,
+                Amount = request.Amount
+            });
 
-            return Ok(new WithdrawalModel()
+            return Ok(new WithdrawalModel
             {
                 //GroupName = ,
                 //Id = ,

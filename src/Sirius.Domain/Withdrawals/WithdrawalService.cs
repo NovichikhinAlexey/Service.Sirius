@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Service.BlockchainWalletApi.Client.Http;
 
@@ -15,7 +14,7 @@ namespace Sirius.Domain.Withdrawals
             _blockchainWalletClient = blockchainWalletClient;
         }
 
-        public async Task ExecuteTransferAsync(
+        public async Task Execute(
             Guid requestId,
             string blockchainId,
             string networkId,
@@ -28,16 +27,16 @@ namespace Sirius.Domain.Withdrawals
                 requestId, 
                 blockchainId, 
                 networkId, 
-                new ExecuteTransferRequest()
+                new ExecuteTransferRequest
                 {
-                    Destinations = new List<TransferDestination>()
+                    Destinations = new List<TransferDestination>
                     {
-                        new TransferDestination()
+                        new TransferDestination
                         {
                             Address = toAddress,
-                            Units = new List<TransferUnit>()
+                            Units = new List<TransferUnit>
                             {
-                                new TransferUnit()
+                                new TransferUnit
                                 {
                                     Amount = amount,
                                     AssetId = assetId
@@ -45,9 +44,9 @@ namespace Sirius.Domain.Withdrawals
                             }
                         }
                     },
-                    Sources = new List<TransferSource>()
+                    Sources = new List<TransferSource>
                     {
-                        new TransferSource()
+                        new TransferSource
                         {
                             Address = fromAddress,
                             Nonce = 0,

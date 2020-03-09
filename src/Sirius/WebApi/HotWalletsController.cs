@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Sirius.Domain.HotWallets;
+using Sirius.Messages;
 using Sirius.WebApi.Models;
 using Sirius.WebApi.Models.HotWallets;
 
@@ -13,10 +15,14 @@ namespace Sirius.WebApi
     public class HotWalletsController : ControllerBase
     {
         private readonly HotWalletService _hotWalletService;
+        private readonly IPublishEndpoint _publisher;
 
-        public HotWalletsController(HotWalletService hotWalletService)
+        public HotWalletsController(
+            HotWalletService hotWalletService,
+            IPublishEndpoint publisher)
         {
             _hotWalletService = hotWalletService;
+            _publisher = publisher;
         }
 
         [HttpPut("imported")]
@@ -26,11 +32,20 @@ namespace Sirius.WebApi
             [FromBody] ImportHotWalletRequest request)
         {
             var importWallet = await _hotWalletService.ImportAsync(
-                blockchainId, 
-                networkId, 
+                blockchainId,
+                networkId,
                 request.Address,
                 request.GroupName,
                 request.PublicKey);
+
+            await _publisher.Publish(new HotWalletImported
+            {
+                BlockchainId = blockchainId, 
+                NetworkId = networkId,
+                Address = request.Address,
+                GroupName = request.GroupName,
+                PublicKey = request.PublicKey
+            });
 
             return Ok(HotWalletModelMapper.MapFromDomain(importWallet));
         }
