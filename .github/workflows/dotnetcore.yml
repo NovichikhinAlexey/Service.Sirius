@@ -1,6 +1,9 @@
 name: Continuous integration for Sirius
 
-on: [push]
+on:
+  push:
+      branches:
+        - master
 
 jobs:
   build:
