@@ -1,6 +1,6 @@
 ﻿namespace Sirius.Configuration
 {
-    public class BlockchainWalletApiService
+    public class BlockchainWalletApiServiceConfig
     {
         public string Url { get; set; }
     }

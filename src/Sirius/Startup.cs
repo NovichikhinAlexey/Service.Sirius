@@ -48,14 +48,14 @@ namespace Sirius
 
             services.AddMassTransit(x =>
             {
-                EndpointConvention.Map<ExecuteWithdrawal>(new Uri("queue:sirius-withdrawals"));
+                EndpointConvention.Map<ExecuteWithdrawal>(new Uri("queue:sirius-withdrawals-execution"));
 
                 x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
                 {
-                    cfg.Host("rabbit-liquidity.liquidity.svc.cluster.local", host =>
+                    cfg.Host(this.Config.RabbitMq.HostUrl, host =>
                     {
-                        host.Username("liquidity");
-                        host.Password("liquidity");
+                        host.Username(this.Config.RabbitMq.Username);
+                        host.Password(this.Config.RabbitMq.Password);
                     });
 
                     cfg.SetLoggerFactory(provider.GetRequiredService<ILoggerFactory>());

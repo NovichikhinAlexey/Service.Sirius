@@ -33,7 +33,7 @@ namespace Sirius.Worker
             new HostBuilder()
                 .SwisschainService<Startup>(options =>
                 {
-                    options.UsePorts(5100, 5101);
+                    options.UsePorts(5000, 5001);
                     options.UseLoggerFactory(loggerFactory);
                     options.WithWebJsonConfigurationSource(ApplicationEnvironment.Config["RemoteSettingsUrl"]);
                 });

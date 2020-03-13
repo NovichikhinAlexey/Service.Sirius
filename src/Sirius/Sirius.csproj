@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sirius.Configuration\Sirius.Configuration.csproj" />
     <ProjectReference Include="..\Sirius.Domain\Sirius.Domain.csproj" />
     <ProjectReference Include="..\Sirius.Messages\Sirius.Messages.csproj" />
   </ItemGroup>
