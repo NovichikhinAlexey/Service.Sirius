@@ -7,8 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. Client", "03. Client", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Solution Items", "01. Solution Items", "{85EB7950-61F2-4B83-9F3E-F74ECCE0D3C8}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
 		format.appsettings.json = format.appsettings.json
+		.github\workflows\WorkflowForApi.yml = .github\workflows\WorkflowForApi.yml
+		.github\workflows\WorkflowForWorker.yml = .github\workflows\WorkflowForWorker.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Tests", "02. Tests", "{7F3DBAA2-139B-401D-A33F-1409A9BB4DE8}"
@@ -25,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Messages", "src\Siri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Worker", "src\Sirius.Worker\Sirius.Worker.csproj", "{7A0C0C96-86E2-4B4C-94B6-797008EEEA57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Configuration", "src\Sirius.Configuration\Sirius.Configuration.csproj", "{14FBB439-4F0A-423F-8C37-F3AC19F003A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Configuration", "src\Sirius.Configuration\Sirius.Configuration.csproj", "{14FBB439-4F0A-423F-8C37-F3AC19F003A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
