@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Test
+      run: echo ${{ secrets.DOCKER_USERNAME }}
+    - name: Test2
+      run: echo ${{ secrets.DOCKER_PASSWORD }}
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
