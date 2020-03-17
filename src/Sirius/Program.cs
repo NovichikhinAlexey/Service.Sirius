@@ -34,7 +34,17 @@ namespace Sirius
                 .SwisschainService<Startup>(options =>
                 {
                     options.UseLoggerFactory(loggerFactory);
-                    options.WithWebJsonConfigurationSource(ApplicationEnvironment.Config["RemoteSettingsUrl"]);
+                    var remoteSettingsUrl = ApplicationEnvironment.Config["RemoteSettingsUrl"];
+
+                    if (remoteSettingsUrl != default)
+                    {
+                        options.WithWebJsonConfigurationSource(webJsonOptions =>
+                        {
+                            webJsonOptions.Url = remoteSettingsUrl;
+                            webJsonOptions.IsOptional = ApplicationEnvironment.IsDevelopment;
+                            webJsonOptions.Version = ApplicationInformation.AppVersion;
+                        });
+                    }
                 });
     }
 }

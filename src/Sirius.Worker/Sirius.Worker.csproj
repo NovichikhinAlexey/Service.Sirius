@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,14 +6,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MassTransit" Version="6.2.1" />
     <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="6.2.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="6.2.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="Swisschain.Sdk.Server" Version="2.2.1" />
     <PackageReference Include="Swisschain.Service.BlockchainWallet.Messages" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Service.Sirius.Repositories\Service.Sirius.Repositories.csproj" />
     <ProjectReference Include="..\Sirius.Configuration\Sirius.Configuration.csproj" />
     <ProjectReference Include="..\Sirius.Domain\Sirius.Domain.csproj" />
     <ProjectReference Include="..\Sirius.Messages\Sirius.Messages.csproj" />

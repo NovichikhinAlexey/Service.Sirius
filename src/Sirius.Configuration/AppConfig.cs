@@ -5,5 +5,7 @@
         public BlockchainWalletApiServiceConfig BlockchainWalletApiService { get; set; }
 
         public RabbitMqConfig RabbitMq { get; set; }
+
+        public DbConfig DbConfig { get; set; }
     }
 }

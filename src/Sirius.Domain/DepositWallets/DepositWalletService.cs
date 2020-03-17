@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Service.BlockchainWalletApi.Client.Http;
+using Sirius.Domain.Repositories;
 
 namespace Sirius.Domain.DepositWallets
 {
@@ -11,10 +10,14 @@ namespace Sirius.Domain.DepositWallets
     {
         private readonly ConcurrentDictionary<(string BlockchainId, string NetworkId), ConcurrentDictionary<string, DepositWallet>> _wallets;
         private readonly IBlockchainWalletClient _blockchainWalletClient;
+        private readonly IDepositWalletRepository _depositWalletRepository;
 
-        public DepositWalletService(IBlockchainWalletClient blockchainWalletClient)
+        public DepositWalletService(
+            IBlockchainWalletClient blockchainWalletClient,
+            IDepositWalletRepository depositWalletRepository)
         {
             _blockchainWalletClient = blockchainWalletClient;
+            _depositWalletRepository = depositWalletRepository;
             _wallets = new ConcurrentDictionary<(string BlockchainId, string NetworkId), ConcurrentDictionary<string, DepositWallet>>();
         }
 
@@ -49,32 +52,12 @@ namespace Sirius.Domain.DepositWallets
                 PublicKey = pubKey
             };
 
-            _wallets.AddOrUpdate(
-                (blockchainId, networkId),
-                addValueFactory: key =>
-                {
-                    return new ConcurrentDictionary<string, DepositWallet> { [depositWallet.Id] = depositWallet};
-                },
-                updateValueFactory: (key, current) =>
-                {
-                    var existing = current.Values.FirstOrDefault(x => x.Address.Equals(address, StringComparison.InvariantCultureIgnoreCase));
-
-                    if (existing == null)
-                    {
-                        current.TryAdd(depositWallet.Id, depositWallet);
-                    }
-                    else
-                    {
-                        current[depositWallet.Id] = depositWallet;
-                    }
-
-                    return current;
-                });
+            await _depositWalletRepository.AddOrUpdateAsync(depositWallet);
 
             return depositWallet;
         }
 
-        public Task<IReadOnlyCollection<DepositWallet>> GetAllAsync(
+        public async Task<IReadOnlyCollection<DepositWallet>> GetAllAsync(
             string blockchainId,
             string networkId,
             int startAfter,
@@ -82,32 +65,21 @@ namespace Sirius.Domain.DepositWallets
             int limit
             )
         {
-            _wallets.TryGetValue((blockchainId, networkId), out var dictionary);
+            var many = await _depositWalletRepository
+                .GetManyAsync(blockchainId, networkId, startAfter, limit);
             
-            var result = dictionary
-                ?.Values
-                .Skip(startAfter)
-                .Take(limit)
-                .ToArray();
-
-            return Task.FromResult((IReadOnlyCollection<DepositWallet>)result);
+            return many;
         }
 
 
-        public Task<DepositWallet> GetByIdAsync(
+        public async Task<DepositWallet> GetByIdAsync(
             string blockchainId,
             string networkId,
             string walletId)
         {
-            _wallets.TryGetValue((blockchainId, networkId), out var dictionary);
+            var depositWallet = await _depositWalletRepository.GetByIdAsync(blockchainId, networkId, walletId);
 
-            if (dictionary != null &&
-                dictionary.TryGetValue(walletId, out var wallet))
-            {
-                return Task.FromResult(wallet);
-            }
-
-            return Task.FromResult<DepositWallet>(null);
+            return depositWallet;
         }
     }
 }

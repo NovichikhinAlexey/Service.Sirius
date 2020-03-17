@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Service.BlockchainWalletApi.Client.Http;
+using Service.Sirius.Repositories.Extensions;
 using Sirius.Configuration;
 using Sirius.Domain.Withdrawals;
 using Sirius.Worker.HostedServices;
@@ -23,6 +24,8 @@ namespace Sirius.Worker
         protected override void ConfigureServicesExt(IServiceCollection services)
         {
             base.ConfigureServicesExt(services);
+
+            services.RegisterRepository(this.Config.DbConfig.ConnectionString);
 
             //Register message consumers
             services.AddTransient<ExecuteWithdrawalConsumer>();

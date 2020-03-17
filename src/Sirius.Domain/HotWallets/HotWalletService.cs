@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Service.BlockchainWalletApi.Client.Http;
+using Sirius.Domain.Repositories;
 
 namespace Sirius.Domain.HotWallets
 {
     public class HotWalletService
     {
-        private readonly ConcurrentDictionary<(string BlockchainId, string NetworkId, string GroupName), HotWallet> _designatedWallets;
-        private readonly ConcurrentDictionary<(string BlockchainId, string NetworkId), ConcurrentDictionary<string, HotWallet>> _wallets;
         private readonly IBlockchainWalletClient _blockchainWalletClient;
+        private readonly IHotWalletRepository _hotWalletRepository;
 
-        public HotWalletService(IBlockchainWalletClient blockchainWalletClient)
+        public HotWalletService(
+            IBlockchainWalletClient blockchainWalletClient,
+            IHotWalletRepository hotWalletRepository)
         {
             _blockchainWalletClient = blockchainWalletClient;
-            _wallets = new ConcurrentDictionary<(string BlockchainId, string NetworkId), ConcurrentDictionary<string, HotWallet>>();
-            _designatedWallets = new ConcurrentDictionary<(string BlockchainId, string NetworkId, string GroupName), HotWallet>();
+            _hotWalletRepository = hotWalletRepository;
         }
 
         public async Task<HotWallet> DesignateWalletAsync(
@@ -31,20 +32,19 @@ namespace Sirius.Domain.HotWallets
             if (hotwallet == null)
                 return null;
 
-            _designatedWallets[(blockchainId, networkId, groupName)] = hotwallet;
+            await _hotWalletRepository.DesignateAsync(blockchainId, networkId, groupName, id);
 
             return hotwallet;
         }
 
-        public Task<HotWallet> GetDesignatedWalletAsync(
+        public async Task<HotWallet> GetDesignatedWalletAsync(
             string blockchainId,
             string networkId,
             string groupName)
         {
-            if (!_designatedWallets.TryGetValue((blockchainId, networkId, groupName), out var hotwallet))
-                return Task.FromResult<HotWallet>(null);
+            var hotWallet = await _hotWalletRepository.GetDesignatedAsync(blockchainId, networkId, groupName);
 
-            return Task.FromResult(hotwallet);
+            return hotWallet;
         }
 
         public async Task<HotWallet> ImportAsync(
@@ -76,33 +76,12 @@ namespace Sirius.Domain.HotWallets
                 PublicKey = pubKey
             };
 
-            _wallets.AddOrUpdate(
-                (blockchainId, networkId),
-                addValueFactory: key =>
-                {
-                    return new ConcurrentDictionary<string, HotWallet> { [hotWallet.Id] = hotWallet};
-                },
-                updateValueFactory: (key, current) =>
-                {
-                    var existing = current.Values
-                        .FirstOrDefault(x => x.Address.Equals(address, StringComparison.InvariantCultureIgnoreCase));
-
-                    if (existing == null)
-                    {
-                        current.TryAdd(hotWallet.Id, hotWallet);
-                    }
-                    else
-                    {
-                        current[hotWallet.Id] = hotWallet;
-                    }
-
-                    return current;
-                });
+            await _hotWalletRepository.AddOrUpdateAsync(hotWallet);
 
             return hotWallet;
         }
 
-        public Task<IReadOnlyCollection<HotWallet>> GetAllAsync(
+        public async Task<IReadOnlyCollection<HotWallet>> GetAllAsync(
             string blockchainId,
             string networkId,
             int startAfter,
@@ -110,15 +89,9 @@ namespace Sirius.Domain.HotWallets
             int limit
             )
         {
-            _wallets.TryGetValue((blockchainId, networkId), out var dictionary);
-            
-            var result = dictionary
-                ?.Values
-                .Skip(startAfter)
-                .Take(limit)
-                .ToArray();
+            var result = await _hotWalletRepository.GetAllAsync(blockchainId, networkId, startAfter, limit);
 
-            return Task.FromResult((IReadOnlyCollection<HotWallet>)result);
+            return result;
         }
 
 
@@ -132,15 +105,7 @@ namespace Sirius.Domain.HotWallets
 
         private Task<HotWallet> GetHotWalletAsync(string blockchainId, string networkId, string walletId)
         {
-            _wallets.TryGetValue((blockchainId, networkId), out var dictionary);
-
-            if (dictionary != null &&
-                dictionary.TryGetValue(walletId, out var wallet))
-            {
-                return Task.FromResult(wallet);
-            }
-
-            return Task.FromResult<HotWallet>(null);
+            return _hotWalletRepository.GetAsync(blockchainId, networkId, walletId);
         }
     }
 }

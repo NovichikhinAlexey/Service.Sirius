@@ -16,6 +16,13 @@
     <PackageReference Include="MassTransit" Version="6.2.1" />
     <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="6.2.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="6.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0" />
   </ItemGroup>
@@ -37,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Service.Sirius.Repositories\Service.Sirius.Repositories.csproj" />
     <ProjectReference Include="..\Sirius.Configuration\Sirius.Configuration.csproj" />
     <ProjectReference Include="..\Sirius.Domain\Sirius.Domain.csproj" />
     <ProjectReference Include="..\Sirius.Messages\Sirius.Messages.csproj" />

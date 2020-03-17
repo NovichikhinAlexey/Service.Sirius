@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Service.BlockchainWalletApi.Client.Http;
+using Sirius.Domain.Repositories;
 
 namespace Sirius.Domain.Withdrawals
 {
     public class WithdrawalService
     {
         private readonly IBlockchainWalletClient _blockchainWalletClient;
+        private readonly IWithdrawalRepository _withdrawalRepository;
 
-        public WithdrawalService(IBlockchainWalletClient blockchainWalletClient)
+        public WithdrawalService(
+            IBlockchainWalletClient blockchainWalletClient,
+            IWithdrawalRepository withdrawalRepository)
         {
             _blockchainWalletClient = blockchainWalletClient;
+            _withdrawalRepository = withdrawalRepository;
         }
 
         public async Task Execute(
@@ -54,5 +59,19 @@ namespace Sirius.Domain.Withdrawals
                     },
                 });
         }
+
+        public async Task SaveWithdrawalAsync(Withdrawal withdrawal)
+        {
+            await _withdrawalRepository.SaveAsync(withdrawal);
+        }
+
+        public Task<IReadOnlyCollection<Withdrawal>> GetManyAsync(string blockchainId, string networkId, int startingAfter, int limit)
+        {
+            return _withdrawalRepository.GetManyAsync(blockchainId, networkId, startingAfter, limit);
+        }
+    }
+
+    public class Withdrawal
+    {
     }
 }

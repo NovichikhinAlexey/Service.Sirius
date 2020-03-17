@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using MassTransit;
-using Sirius.Configuration;
-using Sirius.GrpcServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -10,12 +8,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Service.BlockchainWalletApi.Client.Http;
+using Service.Sirius.Repositories.Extensions;
+using Sirius.Configuration;
 using Sirius.Domain.Assets;
 using Sirius.Domain.DepositWallets;
 using Sirius.Domain.HotWallets;
 using Sirius.Domain.Networks;
-using Sirius.HostedServices;
 using Sirius.Domain.Withdrawals;
+using Sirius.GrpcServices;
+using Sirius.HostedServices;
 using Swisschain.Sdk.Server.Common;
 
 namespace Sirius
@@ -29,6 +30,9 @@ namespace Sirius
         protected override void ConfigureServicesExt(IServiceCollection services)
         {
             base.ConfigureServicesExt(services);
+
+            services.RegisterRepository(this.Config.DbConfig.ConnectionString);
+            services.Migrate();
 
             services.AddSingleton<NetworkService>();
             services.AddSingleton<AssetService>();
