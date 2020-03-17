@@ -67,6 +67,7 @@ namespace Service.Sirius.Repositories.DbContexts
                 .WithOne(x => x.WalletGroup)
                 .HasForeignKey<HotWalletEntity>(x => new { x.BlockchainId, x.NetworkId, x.GroupName});
 
+
             modelBuilder.Entity<DepositEntity>()
                 .HasKey(c => new { c.BlockchainId, c.NetworkId, c.Id });
 
@@ -75,7 +76,6 @@ namespace Service.Sirius.Repositories.DbContexts
                 .HasIndex(c => new { c.BlockchainId, c.NetworkId, c.TransactionHash })
                 .IsUnique(true)
                 .HasName("IX_BlockchainId_NetworkId_TransactionHash");
-
 
             base.OnModelCreating(modelBuilder);
         }

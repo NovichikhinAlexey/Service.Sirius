@@ -1,4 +1,16 @@
 {
+  {
+  "DbConfig": {
+    "ConnectionString": "Server=127.0.0.1;Database=test_db;Port=55432;User Id=test_user;Password=QWERTY_123456;"
+  },
+  "RabbitMq": {
+    "HostUrl": "rabbitmq://127.0.0.1:55672",
+    "Username": "test_user",
+    "Password": "QWERTY_123456"
+  },
+  "BlockchainWalletApiService": {
+    "Url": "http://blockchain-wallet-api.services.svc.cluster.local/"
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Trace"

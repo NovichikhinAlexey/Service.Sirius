@@ -85,7 +85,7 @@ namespace Service.Sirius.Repositories
             };
 
             depositEntity.DepositSources = (ICollection<DepositSourceEntity>) 
-                deposit.Sources?.Select(x => MapToEntity(depositEntity, x)) ?? new List<DepositSourceEntity>();
+                deposit.Sources?.Select(x => MapToEntity(depositEntity, x)).ToArray() ?? new List<DepositSourceEntity>();
 
             return depositEntity;
         }

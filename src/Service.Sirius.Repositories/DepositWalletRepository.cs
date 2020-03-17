@@ -73,8 +73,12 @@ namespace Service.Sirius.Repositories
         {
             await using var context = new SiriusContext(_dbContextOptionsBuilder.Options);
 
-            var existing = await context.DepositWallets
-                .FindAsync(blockchainId, networkId, walletId);
+            var existing = await context
+                .DepositWallets
+                .Include(x => x.WalletGroup)
+                .FirstOrDefaultAsync(x => x.BlockchainId == blockchainId &&
+                                          x.NetworkId == networkId &&
+                                          x.Id == walletId);
 
             return MapToDomain(existing);
         }
@@ -106,7 +110,7 @@ namespace Service.Sirius.Repositories
                 Id = depositWalletEntity.Id,
                 BlockchainId = depositWalletEntity.BlockchainId,
                 NetworkId = depositWalletEntity.NetworkId,
-                GroupName = depositWalletEntity.WalletGroup.GroupName,
+                GroupName = depositWalletEntity.GroupName,
                 Address = depositWalletEntity.OriginalWalletAddress,
             };
         }

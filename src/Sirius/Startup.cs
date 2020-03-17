@@ -11,6 +11,7 @@ using Service.BlockchainWalletApi.Client.Http;
 using Service.Sirius.Repositories.Extensions;
 using Sirius.Configuration;
 using Sirius.Domain.Assets;
+using Sirius.Domain.Deposits;
 using Sirius.Domain.DepositWallets;
 using Sirius.Domain.HotWallets;
 using Sirius.Domain.Networks;
@@ -36,9 +37,10 @@ namespace Sirius
 
             services.AddSingleton<NetworkService>();
             services.AddSingleton<AssetService>();
-            services.AddSingleton<DepositWalletService>();
-            services.AddSingleton<HotWalletService>();
-            services.AddSingleton<WithdrawalService>();
+            services.AddTransient<WithdrawalService>();
+            services.AddTransient<DepositService>();
+            services.AddTransient<HotWalletService>();
+            services.AddTransient<DepositWalletService>();
             services.AddHttpClient();
 
             services.AddTransient<IBlockchainWalletClient>(x =>

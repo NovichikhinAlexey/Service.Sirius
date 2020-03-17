@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,9 @@ using Microsoft.Extensions.Logging;
 using Service.BlockchainWalletApi.Client.Http;
 using Service.Sirius.Repositories.Extensions;
 using Sirius.Configuration;
+using Sirius.Domain.Deposits;
+using Sirius.Domain.DepositWallets;
+using Sirius.Domain.HotWallets;
 using Sirius.Domain.Withdrawals;
 using Sirius.Worker.HostedServices;
 using Sirius.Worker.MessageConsumers;
@@ -33,6 +37,9 @@ namespace Sirius.Worker
             services.AddTransient<WithdrawalCompletedConsumer>();
 
             services.AddTransient<WithdrawalService>();
+            services.AddTransient<DepositService>();
+            services.AddTransient<HotWalletService>();
+            services.AddTransient<DepositWalletService>();
             services.AddHttpClient();
 
             services.AddTransient<IBlockchainWalletClient>(x =>
@@ -53,6 +60,12 @@ namespace Sirius.Worker
                         host.Username(this.Config.RabbitMq.Username);
                         host.Password(this.Config.RabbitMq.Password);
                     });
+
+                    cfg.UseMessageRetry(y =>
+                        y.Exponential(5, 
+                            TimeSpan.FromMilliseconds(100),
+                        TimeSpan.FromMilliseconds(10_000), 
+                            TimeSpan.FromMilliseconds(100)));
 
                     cfg.SetLoggerFactory(provider.GetRequiredService<ILoggerFactory>());
 
